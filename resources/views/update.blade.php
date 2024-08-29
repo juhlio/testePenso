@@ -5,13 +5,9 @@
     <h1>Alterar Tarefa</h1>
 
     <!-- Exibição de mensagens de erro -->
-    @if ($errors->any())
+    @if (session('error'))
         <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            {{ session('error') }}
         </div>
     @endif
 

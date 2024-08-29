@@ -59,15 +59,15 @@ class TaskController extends Controller
             }
         }
 
-        // Verifica se a data da tarefa está atrasada
+
         $isExpired = Carbon::now()->isAfter($dueDate);
 
         return view('update', compact('task', 'isExpired'));
     }
 
+
     public function update(Request $request, $id)
     {
-        // Validação dos dados recebidos
         $request->validate([
             'subject' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -76,16 +76,13 @@ class TaskController extends Controller
             'due_date.after_or_equal' => 'A data não pode ser anterior a hoje.',
         ]);
 
-        // Verifica se a data está expirada
         if (Carbon::parse($request->input('due_date'))->isPast()) {
-            return redirect()->back()->withErrors(['due_date' => 'A data limite não pode estar no passado.']);
+            return redirect()->back()->withErrors(['due_date' => 'A data limite não pode estar no passado.'])->withInput();
         }
 
-        // Atualiza a tarefa
         $updatedTask = $request->all();
         $this->taskService->updateTask($id, $updatedTask);
 
-        // Recupera a tarefa atualizada para mostrar detalhes
         $task = $this->taskService->findTaskById($id);
 
         try {
@@ -101,11 +98,12 @@ class TaskController extends Controller
         $today = Carbon::now();
         $daysRemaining = round($today->diffInDays($dueDate, false));
 
-        return redirect()->route('tasks.show', ['id' => $id])
+        // Redirecionar para a página de detalhes com mensagem de sucesso
+        return redirect()->route('tasks.show', ['task' => $id])
             ->with('success', 'Tarefa atualizada com sucesso!')
             ->with('daysRemaining', $daysRemaining);
     }
-
+    
     public function destroy($id)
     {
         $this->taskService->deleteTask($id);
