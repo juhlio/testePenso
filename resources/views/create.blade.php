@@ -2,9 +2,20 @@
 
 @section('content')
 <div class="container">
-    <h1>Adicionar Nova Tarefa</h1>
+    <h1>Criar Nova Tarefa</h1>
 
-    <form enctype="multipart/form-data" method="POST">
+    <!-- Exibição de mensagens de erro -->
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('tasks.store') }}" method="POST">
         @csrf
 
         <div class="form-group">
@@ -14,7 +25,7 @@
 
         <div class="form-group">
             <label for="description">Descrição:</label>
-            <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+            <textarea id="description" name="description" class="form-control" rows="4"></textarea>
         </div>
 
         <div class="form-group">

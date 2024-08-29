@@ -23,6 +23,9 @@
                     <td>{{ $task['description'] }}</td>
                     <td>{{ \Carbon\Carbon::parse($task['due_date'])->format('d/m/Y') }}</td>
                     <td>
+                        <!-- Botão para ver detalhes -->
+                        <a href="{{ route('tasks.show', ['task' => $task['id']]) }}" class="btn btn-info btn-sm">Ver Detalhes</a>
+
                         <!-- Botão para editar -->
                         <a href="{{ route('tasks.edit', ['task' => $task['id']]) }}" class="btn btn-warning btn-sm">Editar</a>
 
